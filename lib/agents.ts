@@ -13,7 +13,19 @@ interface ToolDefinition {
   transport: ToolTransport;
 }
 
-const tools: Record<string, ToolDefinition> = Object.fromEntries(manifest.tools.map((tool) => [tool.name, tool]));
+const tools: Record<string, ToolDefinition> = Object.fromEntries(
+  manifest.tools.map((tool) => [
+    tool.name,
+    {
+      ...tool,
+      transport: {
+        ...tool.transport,
+        type: tool.transport.type as 'http',
+        method: tool.transport.method as 'POST'
+      }
+    }
+  ])
+);
 
 async function postJson<TInput extends Record<string, unknown>, TOutput>(toolName: string, payload: TInput): Promise<TOutput> {
   const tool = tools[toolName];
