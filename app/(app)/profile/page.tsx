@@ -73,13 +73,13 @@ export default function ProfilePage() {
           <p className="text-gray-600">{profile.interests?.length ? profile.interests.join(', ') : 'לא צויינו תחומי עניין.'}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href="/(app)/profile/edit/bio">
+          <Link href="/profile/edit/bio">
             <Button variant="secondary">עריכת ביוגרפיה</Button>
           </Link>
-          <Link href="/(app)/profile/edit/photos">
+          <Link href="/profile/edit/photos">
             <Button variant="secondary">ניהול תמונות</Button>
           </Link>
-          <Link href="/(app)/profile/edit/preferences">
+          <Link href="/profile/edit/preferences">
             <Button variant="secondary">עדכון העדפות</Button>
           </Link>
         </div>
