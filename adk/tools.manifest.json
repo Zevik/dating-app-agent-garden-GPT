@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "tools": [
+    {
+      "name": "readUserProfile",
+      "input_schema": { "$ref": "tools.schema.json#/properties/readUserProfile.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/readUserProfile.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/readUserProfile"
+      }
+    },
+    {
+      "name": "queryCandidates",
+      "input_schema": { "$ref": "tools.schema.json#/properties/queryCandidates.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/queryCandidates.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/queryCandidates"
+      }
+    },
+    {
+      "name": "scoreCandidate",
+      "input_schema": { "$ref": "tools.schema.json#/properties/scoreCandidate.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/scoreCandidate.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/scoreCandidate"
+      }
+    },
+    {
+      "name": "createOrQueueMatch",
+      "input_schema": { "$ref": "tools.schema.json#/properties/createOrQueueMatch.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/createOrQueueMatch.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/createOrQueueMatch"
+      }
+    },
+    {
+      "name": "getActiveMatch",
+      "input_schema": { "$ref": "tools.schema.json#/properties/getActiveMatch.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/getActiveMatch.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/getActiveMatch"
+      }
+    },
+    {
+      "name": "closeMatch",
+      "input_schema": { "$ref": "tools.schema.json#/properties/closeMatch.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/closeMatch.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/closeMatch"
+      }
+    },
+    {
+      "name": "moderateText",
+      "input_schema": { "$ref": "tools.schema.json#/properties/moderateText.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/moderateText.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/moderateText"
+      }
+    },
+    {
+      "name": "storeMessage",
+      "input_schema": { "$ref": "tools.schema.json#/properties/storeMessage.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/storeMessage.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/storeMessage"
+      }
+    },
+    {
+      "name": "extractSharedInterests",
+      "input_schema": { "$ref": "tools.schema.json#/properties/extractSharedInterests.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/extractSharedInterests.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/extractSharedInterests"
+      }
+    },
+    {
+      "name": "embedText",
+      "input_schema": { "$ref": "tools.schema.json#/properties/embedText.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/embedText.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/embedText"
+      }
+    },
+    {
+      "name": "storeEmbedding",
+      "input_schema": { "$ref": "tools.schema.json#/properties/storeEmbedding.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/storeEmbedding.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/storeEmbedding"
+      }
+    },
+    {
+      "name": "sendPush",
+      "input_schema": { "$ref": "tools.schema.json#/properties/sendPush.input" },
+      "output_schema": { "$ref": "tools.schema.json#/properties/sendPush.output" },
+      "transport": {
+        "type": "http",
+        "method": "POST",
+        "url": "https://us-central1-demo-dating-app.cloudfunctions.net/sendPush"
+      }
+    }
+  ]
+}

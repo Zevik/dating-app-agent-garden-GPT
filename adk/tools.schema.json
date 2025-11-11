@@ -1,0 +1,291 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "tools.schema.json",
+  "title": "Agent Tools Schemas",
+  "type": "object",
+  "definitions": {
+    "UserId": { "type": "string", "minLength": 6 },
+    "MatchId": { "type": "string", "minLength": 8 },
+    "Timestamp": { "type": "string", "format": "date-time" },
+    "Geo": {
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      },
+      "required": ["lat", "lng"],
+      "additionalProperties": false
+    },
+    "Prefs": {
+      "type": "object",
+      "properties": {
+        "ageMin": { "type": "integer", "minimum": 18, "maximum": 99 },
+        "ageMax": { "type": "integer", "minimum": 18, "maximum": 99 },
+        "maxDistanceKm": { "type": "integer", "minimum": 1, "maximum": 500 }
+      },
+      "required": ["ageMin", "ageMax", "maxDistanceKm"],
+      "additionalProperties": false
+    },
+    "Candidate": {
+      "type": "object",
+      "properties": {
+        "userId": { "$ref": "#/definitions/UserId" },
+        "name": { "type": "string" },
+        "age": { "type": "integer", "minimum": 18 },
+        "city": { "type": "string" },
+        "distanceKm": { "type": "number", "minimum": 0 },
+        "interests": { "type": "array", "items": { "type": "string" }, "maxItems": 25 },
+        "photos": { "type": "array", "items": { "type": "string", "format": "uri" }, "maxItems": 6 }
+      },
+      "required": ["userId", "age"],
+      "additionalProperties": true
+    },
+    "Score": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "number", "minimum": 0, "maximum": 1 },
+        "reasons": { "type": "array", "items": { "type": "string", "maxLength": 200 }, "maxItems": 5 }
+      },
+      "required": ["value"],
+      "additionalProperties": false
+    },
+    "OpeningLine": {
+      "type": "object",
+      "properties": {
+        "text": { "type": "string", "minLength": 3, "maxLength": 180 },
+        "tag": { "type": "string" }
+      },
+      "required": ["text"],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "readUserProfile.input": {
+      "type": "object",
+      "properties": {
+        "userId": { "$ref": "#/definitions/UserId" }
+      },
+      "required": ["userId"]
+    },
+    "readUserProfile.output": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "userId": { "$ref": "#/definitions/UserId" },
+            "name": { "type": "string" },
+            "age": { "type": "integer" },
+            "gender": { "type": "string", "enum": ["male", "female", "other"] },
+            "seeking": { "type": "string", "enum": ["male", "female", "other"] },
+            "location": { "$ref": "#/definitions/Geo" },
+            "city": { "type": "string" },
+            "bio": { "type": "string", "maxLength": 500 },
+            "interests": { "type": "array", "items": { "type": "string" }, "maxItems": 25 },
+            "prefs": { "$ref": "#/definitions/Prefs" },
+            "plan": { "type": "string", "enum": ["free", "premium", "vip"] }
+          },
+          "required": ["userId", "age", "prefs"]
+        }
+      },
+      "required": ["user"],
+      "additionalProperties": false
+    },
+    "queryCandidates.input": {
+      "type": "object",
+      "properties": {
+        "userId": { "$ref": "#/definitions/UserId" },
+        "filters": {
+          "type": "object",
+          "properties": {
+            "gender": { "type": "string" },
+            "ageMin": { "type": "integer" },
+            "ageMax": { "type": "integer" },
+            "maxDistanceKm": { "type": "integer" },
+            "limit": { "type": "integer", "minimum": 1, "maximum": 50 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["userId"],
+      "additionalProperties": false
+    },
+    "queryCandidates.output": {
+      "type": "object",
+      "properties": {
+        "candidates": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Candidate" },
+          "maxItems": 50
+        }
+      },
+      "required": ["candidates"],
+      "additionalProperties": false
+    },
+    "scoreCandidate.input": {
+      "type": "object",
+      "properties": {
+        "sourceUser": { "$ref": "#/definitions/UserId" },
+        "candidate": { "$ref": "#/definitions/Candidate" }
+      },
+      "required": ["sourceUser", "candidate"],
+      "additionalProperties": false
+    },
+    "scoreCandidate.output": {
+      "type": "object",
+      "properties": {
+        "score": { "$ref": "#/definitions/Score" }
+      },
+      "required": ["score"],
+      "additionalProperties": false
+    },
+    "createOrQueueMatch.input": {
+      "type": "object",
+      "properties": {
+        "userA": { "$ref": "#/definitions/UserId" },
+        "userB": { "$ref": "#/definitions/UserId" },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "required": ["userA", "userB"],
+      "additionalProperties": false
+    },
+    "createOrQueueMatch.output": {
+      "type": "object",
+      "properties": {
+        "matchId": { "$ref": "#/definitions/MatchId" },
+        "state": { "type": "string", "enum": ["pending", "active", "closed"] }
+      },
+      "required": ["matchId", "state"],
+      "additionalProperties": false
+    },
+    "getActiveMatch.input": {
+      "type": "object",
+      "properties": {
+        "userId": { "$ref": "#/definitions/UserId" }
+      },
+      "required": ["userId"]
+    },
+    "getActiveMatch.output": {
+      "type": "object",
+      "properties": {
+        "matchId": { "type": ["null", { "$ref": "#/definitions/MatchId" }] },
+        "state": { "type": ["null", "string"] }
+      },
+      "required": ["matchId"],
+      "additionalProperties": false
+    },
+    "closeMatch.input": {
+      "type": "object",
+      "properties": {
+        "matchId": { "$ref": "#/definitions/MatchId" },
+        "reason": { "type": "string", "maxLength": 200 }
+      },
+      "required": ["matchId"]
+    },
+    "closeMatch.output": {
+      "type": "object",
+      "properties": {
+        "ok": { "type": "boolean" }
+      },
+      "required": ["ok"],
+      "additionalProperties": false
+    },
+    "moderateText.input": {
+      "type": "object",
+      "properties": {
+        "text": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "context": { "type": "string" }
+      },
+      "required": ["text"]
+    },
+    "moderateText.output": {
+      "type": "object",
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "labels": { "type": "array", "items": { "type": "string" }, "maxItems": 10 }
+      },
+      "required": ["allowed"]
+    },
+    "storeMessage.input": {
+      "type": "object",
+      "properties": {
+        "matchId": { "$ref": "#/definitions/MatchId" },
+        "from": { "$ref": "#/definitions/UserId" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 2000 }
+      },
+      "required": ["matchId", "from", "text"]
+    },
+    "storeMessage.output": {
+      "type": "object",
+      "properties": {
+        "messageId": { "type": "string" },
+        "status": { "type": "string", "enum": ["sent", "delivered", "read"] }
+      },
+      "required": ["messageId"]
+    },
+    "extractSharedInterests.input": {
+      "type": "object",
+      "properties": {
+        "userA": { "$ref": "#/definitions/UserId" },
+        "userB": { "$ref": "#/definitions/UserId" }
+      },
+      "required": ["userA", "userB"]
+    },
+    "extractSharedInterests.output": {
+      "type": "object",
+      "properties": {
+        "shared": { "type": "array", "items": { "type": "string" }, "maxItems": 20 }
+      },
+      "required": ["shared"]
+    },
+    "embedText.input": {
+      "type": "object",
+      "properties": {
+        "text": { "type": "string", "minLength": 3, "maxLength": 2000 }
+      },
+      "required": ["text"]
+    },
+    "embedText.output": {
+      "type": "object",
+      "properties": {
+        "vector": { "type": "array", "items": { "type": "number" }, "minItems": 256 }
+      },
+      "required": ["vector"]
+    },
+    "storeEmbedding.input": {
+      "type": "object",
+      "properties": {
+        "userId": { "$ref": "#/definitions/UserId" },
+        "vector": { "type": "array", "items": { "type": "number" }, "minItems": 256 }
+      },
+      "required": ["userId", "vector"]
+    },
+    "storeEmbedding.output": {
+      "type": "object",
+      "properties": {
+        "ok": { "type": "boolean" }
+      },
+      "required": ["ok"]
+    },
+    "sendPush.input": {
+      "type": "object",
+      "properties": {
+        "token": { "type": "string" },
+        "title": { "type": "string", "maxLength": 80 },
+        "body": { "type": "string", "maxLength": 140 },
+        "data": {
+          "type": "object",
+          "additionalProperties": { "type": ["string", "number", "boolean"] }
+        }
+      },
+      "required": ["token", "title", "body"]
+    },
+    "sendPush.output": {
+      "type": "object",
+      "properties": {
+        "ok": { "type": "boolean" }
+      },
+      "required": ["ok"]
+    }
+  }
+}
