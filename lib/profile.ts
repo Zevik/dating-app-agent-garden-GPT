@@ -1,6 +1,6 @@
 'use client';
 
-import { auth, firestore } from './firebase';
+import { auth, db } from './firebase';
 import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 
@@ -14,7 +14,7 @@ function currentUserId(): string {
 
 export async function loadUserProfile() {
   const uid = currentUserId();
-  const ref = doc(firestore, 'users', uid);
+  const ref = doc(db, 'users', uid);
   const snap = await getDoc(ref);
   return snap.exists() ? snap.data() : null;
 }
@@ -33,7 +33,7 @@ export async function saveOnboardingBasics({
   bio: string;
 }) {
   const uid = currentUserId();
-  const ref = doc(firestore, 'users', uid);
+  const ref = doc(db, 'users', uid);
   await setDoc(
     ref,
     {
@@ -57,7 +57,7 @@ export async function saveOnboardingBasics({
 
 export async function saveOnboardingLocation({ city, lat, lng }: { city: string; lat: number; lng: number }) {
   const uid = currentUserId();
-  const ref = doc(firestore, 'users', uid);
+  const ref = doc(db, 'users', uid);
   await updateDoc(ref, {
     city,
     location: { lat, lng },
@@ -67,7 +67,7 @@ export async function saveOnboardingLocation({ city, lat, lng }: { city: string;
 
 export async function saveOnboardingPhotos(photos: string[]) {
   const uid = currentUserId();
-  const ref = doc(firestore, 'users', uid);
+  const ref = doc(db, 'users', uid);
   await updateDoc(ref, {
     photos: photos.map((url, index) => ({ url, order: index, approved: true })),
     updatedAt: serverTimestamp()
@@ -81,7 +81,7 @@ export async function saveOnboardingPreferences({ ageMin, ageMax, maxDistanceKm,
   interests: string[];
 }) {
   const uid = currentUserId();
-  const ref = doc(firestore, 'users', uid);
+  const ref = doc(db, 'users', uid);
   await updateDoc(ref, {
     prefs: { ageMin, ageMax, maxDistanceKm },
     interests,
@@ -91,7 +91,7 @@ export async function saveOnboardingPreferences({ ageMin, ageMax, maxDistanceKm,
 
 export async function updateBio(bio: string) {
   const uid = currentUserId();
-  const ref = doc(firestore, 'users', uid);
+  const ref = doc(db, 'users', uid);
   await updateDoc(ref, { bio, updatedAt: serverTimestamp() });
 }
 
