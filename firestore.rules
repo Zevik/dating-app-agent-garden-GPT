@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isUser(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    match /users/{userId} {
+      allow get: if isUser(userId);
+      allow list: if false;
+      allow create, update: if isUser(userId) && !('plan' in request.resource.data) && !('status' in request.resource.data);
+      allow delete: if isUser(userId);
+    }
+
+    match /public_profiles/{userId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /matches/{matchId} {
+      allow read: if isSignedIn() && (request.auth.uid in resource.data.users);
+      allow write: if false;
+    }
+
+    match /messages/{matchId}/items/{messageId} {
+      allow read: if isSignedIn() && (request.auth.uid in get(/databases/$(database)/documents/matches/$(matchId)).data.users);
+      allow create: if isSignedIn()
+        && request.resource.data.from == request.auth.uid
+        && get(/databases/$(database)/documents/matches/$(matchId)).data.state == 'active'
+        && request.resource.data.text is string
+        && length(request.resource.data.text) > 0
+        && length(request.resource.data.text) <= 2000;
+      allow update, delete: if false;
+    }
+
+    match /likes/{userId}/targets/{targetUserId} {
+      allow read: if isUser(userId);
+      allow write: if isUser(userId);
+    }
+
+    match /reports/{reportId} {
+      allow create: if isSignedIn();
+      allow read, update, delete: if false;
+    }
+
+    match /system/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
