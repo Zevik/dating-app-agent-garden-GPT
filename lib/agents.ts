@@ -1,4 +1,4 @@
-import manifest from '@/../adk/tools.manifest.json';
+import manifest from '@/adk/tools.manifest.json';
 
 interface ToolTransport {
   type: 'http';
