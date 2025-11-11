@@ -1,7 +1,5 @@
-import { app } from './firebase';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-
-const functions = getFunctions(app, 'us-central1');
+import { functions } from './firebase';
+import { httpsCallable } from 'firebase/functions';
 
 export const api = {
   readUserProfile: httpsCallable(functions, 'readUserProfile'),

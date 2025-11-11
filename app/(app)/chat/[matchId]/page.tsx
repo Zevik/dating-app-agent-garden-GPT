@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { auth, firestore } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import { ChatBubble } from '@/components/ChatBubble';
 import { Button } from '@/components/ui/button';
 import { ConversationStarters } from '@/components/ConversationStarters';
@@ -35,12 +35,12 @@ export default function ChatRoomPage() {
 
   useEffect(() => {
     if (!matchId) return;
-    const q = query(collection(firestore, 'messages', matchId, 'items'), orderBy('createdAt', 'asc'), limit(200));
+    const q = query(collection(db, 'messages', matchId, 'items'), orderBy('createdAt', 'asc'), limit(200));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as any) }));
       setMessages(docs);
     });
-    const startersQuery = collection(firestore, 'matches', matchId, 'starters');
+    const startersQuery = collection(db, 'matches', matchId, 'starters');
     const unsubscribeStarters = onSnapshot(startersQuery, (snapshot) => {
       const options = snapshot.docs.map((doc) => (doc.data() as any).text as string).filter(Boolean);
       setStarters(options);

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, onSnapshot, query, where, orderBy } from 'firebase/firestore';
 import Link from 'next/link';
-import { auth, firestore } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import { Card } from '@/components/ui/card';
 
 interface MatchItem {
@@ -31,7 +31,7 @@ export default function ChatListPage() {
 
   useEffect(() => {
     if (!userId) return;
-    const q = query(collection(firestore, 'matches'), where('users', 'array-contains', userId), orderBy('updatedAt', 'desc'));
+    const q = query(collection(db, 'matches'), where('users', 'array-contains', userId), orderBy('updatedAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const items: MatchItem[] = snapshot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as any) }));
       setMatches(items);

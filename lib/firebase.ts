@@ -9,6 +9,7 @@ import {
 import { getFirestore, type Firestore } from 'firebase/firestore';
 import { getStorage, type FirebaseStorage } from 'firebase/storage';
 import { getMessaging, type Messaging, isSupported } from 'firebase/messaging';
+import { getFunctions, type Functions } from 'firebase/functions';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAw7_JP9TYfiRThkWhewT5CxkuzbuAwak4',
@@ -23,8 +24,9 @@ const firebaseConfig = {
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 
 const auth: Auth = getAuth(app);
-const firestore: Firestore = getFirestore(app);
+const db: Firestore = getFirestore(app);
 const storage: FirebaseStorage = getStorage(app);
+const functions: Functions = getFunctions(app, 'us-central1');
 
 let messaging: Messaging | null = null;
 
@@ -38,4 +40,14 @@ async function ensureMessaging(): Promise<Messaging | null> {
   return null;
 }
 
-export { app, auth, firestore, storage, ensureMessaging, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut };
+export {
+  app,
+  auth,
+  db,
+  storage,
+  functions,
+  ensureMessaging,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut
+};
