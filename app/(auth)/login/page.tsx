@@ -20,7 +20,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
-      router.push('/(app)/matches');
+      router.push('/matches');
     } catch (err: any) {
       setError(err.message ?? 'נכשלה ההתחברות, נסו שוב');
     } finally {

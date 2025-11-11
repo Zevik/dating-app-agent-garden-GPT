@@ -29,7 +29,7 @@ export default function OnboardingBasicsPage() {
         seeking: form.seeking as 'male' | 'female' | 'other',
         bio: form.bio
       });
-      router.push('/(auth)/onboarding/location');
+      router.push('/onboarding/location');
     } catch (err: any) {
       setError(err.message ?? 'שמירת הנתונים נכשלה');
     } finally {

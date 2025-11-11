@@ -50,7 +50,7 @@ export default function EditPhotosPage() {
     setLoading(true);
     try {
       await updatePhotos(filled);
-      router.push('/(app)/profile');
+      router.push('/profile');
     } catch (err: any) {
       setError(err.message ?? 'עדכון התמונות נכשל');
     } finally {

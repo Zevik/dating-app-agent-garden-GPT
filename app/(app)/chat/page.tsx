@@ -45,7 +45,7 @@ export default function ChatListPage() {
       <p className="text-gray-600">כאן תמצאו את כל ההתאמות הפעילות שלכם ואת היסטוריית השיחה.</p>
       <div className="grid gap-4">
         {matches.map((match) => (
-          <Link key={match.id} href={`/(app)/chat/${match.id}`} className="transition hover:translate-y-[-2px]">
+          <Link key={match.id} href={`/chat/${match.id}`} className="transition hover:translate-y-[-2px]">
             <Card className="flex flex-col gap-2 p-6">
               <div className="flex items-center justify-between">
                 <span className="text-lg font-semibold text-[#111]">התאמה #{match.id.slice(0, 6)}</span>

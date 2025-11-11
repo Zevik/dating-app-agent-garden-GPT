@@ -25,7 +25,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register(email, password);
-      router.push('/(auth)/onboarding/basics');
+      router.push('/onboarding/basics');
     } catch (err: any) {
       setError(err.message ?? 'הרשמה נכשלה, נסו שוב');
     } finally {

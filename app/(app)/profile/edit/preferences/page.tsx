@@ -52,7 +52,7 @@ export default function EditPreferencesPage() {
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
       await updatePreferences({ ageMin, ageMax, maxDistanceKm, interests: interestList });
-      router.push('/(app)/profile');
+      router.push('/profile');
     } catch (err: any) {
       setError(err.message ?? 'עדכון ההעדפות נכשל');
     } finally {

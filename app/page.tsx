@@ -10,8 +10,8 @@ export default function HomePage() {
         </p>
       </div>
       <div className="flex flex-row gap-4">
-        <Link className="btn-primary" href="/(auth)/register">פתח חשבון חדש</Link>
-        <Link className="btn-secondary" href="/(auth)/login">כבר יש לי חשבון</Link>
+        <Link className="btn-primary" href="/register">פתח חשבון חדש</Link>
+        <Link className="btn-secondary" href="/login">כבר יש לי חשבון</Link>
       </div>
     </main>
   );

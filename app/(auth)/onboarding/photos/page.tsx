@@ -34,7 +34,7 @@ export default function OnboardingPhotosPage() {
     setLoading(true);
     try {
       await saveOnboardingPhotos(filled);
-      router.push('/(auth)/onboarding/preferences');
+      router.push('/onboarding/preferences');
     } catch (err: any) {
       setError(err.message ?? 'שמירת התמונות נכשלה');
     } finally {

@@ -30,7 +30,7 @@ export default function OnboardingPreferencesPage() {
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
       await saveOnboardingPreferences({ ageMin, ageMax, maxDistanceKm, interests: interestList });
-      router.push('/(app)/matches');
+      router.push('/matches');
     } catch (err: any) {
       setError(err.message ?? 'שמירת ההעדפות נכשלה');
     } finally {

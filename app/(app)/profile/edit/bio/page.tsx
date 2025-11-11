@@ -34,7 +34,7 @@ export default function EditBioPage() {
     setError(null);
     try {
       await updateBio(bio);
-      router.push('/(app)/profile');
+      router.push('/profile');
     } catch (err: any) {
       setError(err.message ?? 'עדכון הביוגרפיה נכשל');
     } finally {

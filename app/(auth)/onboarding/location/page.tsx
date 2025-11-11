@@ -21,7 +21,7 @@ export default function OnboardingLocationPage() {
     setLoading(true);
     try {
       await saveOnboardingLocation({ city, lat: Number(lat), lng: Number(lng) });
-      router.push('/(auth)/onboarding/photos');
+      router.push('/onboarding/photos');
     } catch (err: any) {
       setError(err.message ?? 'שמירת המיקום נכשלה');
     } finally {
